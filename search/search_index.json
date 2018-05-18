@@ -1,0 +1,319 @@
+{
+    "docs": [
+        {
+            "location": "/",
+            "text": "IEX-API-Python\n\u00b6\n\n\n\n\n \n \n\n\nSummary\n\u00b6\n\n\nThe \niex-api-python\n module is a wrapper for the \nIEX API\n, and is designed to closely map to the organization of the original API while adding functionality. A few examples of the additional functionality are:\n\n\n\n\nMany queries are returned as \nPandas Dataframes\n.\n\n\nBuilt-in support for websockets connections.\n\n\nOption to format timestamps as datetime objects or ISO format.\n\n\n\n\nInstallation\n\u00b6\n\n\n\n\nPython >=3.6\n\n\n\n\npip install iex-api-python\n\n\n\n\nGetting Started\n\u00b6\n\n\nFrom the \nAPI documenation\n:\n\n\n\n\nThe IEX API is a set of services designed for developers and engineers. It can be used to build high-quality apps and services. We\u2019re always working to improve the IEX API. Please check back for enhancements and improvements.\n\n\n\n\n\n\nRead the terms\n.\n\n\nRead the manual\n and start building.\n\n\nAttribute properly\n.\n\n\n\n\nThe API terms apply to the use of this module, as does the requirement to properly attribute the use of IEX data.",
+            "title": "Home"
+        },
+        {
+            "location": "/#iex-api-python",
+            "text": "",
+            "title": "IEX-API-Python"
+        },
+        {
+            "location": "/#summary",
+            "text": "The  iex-api-python  module is a wrapper for the  IEX API , and is designed to closely map to the organization of the original API while adding functionality. A few examples of the additional functionality are:   Many queries are returned as  Pandas Dataframes .  Built-in support for websockets connections.  Option to format timestamps as datetime objects or ISO format.",
+            "title": "Summary"
+        },
+        {
+            "location": "/#installation",
+            "text": "Python >=3.6   pip install iex-api-python",
+            "title": "Installation"
+        },
+        {
+            "location": "/#getting-started",
+            "text": "From the  API documenation :   The IEX API is a set of services designed for developers and engineers. It can be used to build high-quality apps and services. We\u2019re always working to improve the IEX API. Please check back for enhancements and improvements.    Read the terms .  Read the manual  and start building.  Attribute properly .   The API terms apply to the use of this module, as does the requirement to properly attribute the use of IEX data.",
+            "title": "Getting Started"
+        },
+        {
+            "location": "/stocks/",
+            "text": "Stock\n\u00b6\n\n\nstock(symbol, date_format)\n\n\n\nParameters\n\n\n\n\nsymbol\n - A stock symbol\n\n\ndate_format\n (default: timestamp)\n - Specifies how timestamps should be should be returned. Set to one of the following:\n\n\ntimestamp\n - default; Does not alter IEX API output.\n\n\ndatetime\n - Datetime object.\n\n\nisoformat\n - Converts to isoformat.\n\n\n\n\n\n\n\n\n\n\nThe stock class\n\n\nThe \nstock\n class is useful for returning information for a specific stock, and is designed to map closely to the organization of the \nStocks\n section of the IEX API.\n\n\nOne major difference between the stock class and the Stocks section of the IEX API is that the \nstock\n object is not designed to handle batch requests (multiple stocks) or market data. Batch requests are requests for data on multiple stocks at the same time. Market requests return data for all stocks or a set of stocks based on the request (\ne.g.\n gainers and losers). For batch requests, you should use the \nbatch\n, and market requests should use the \nmarket\n object.\n\n\nAlso note that the \nstock\n object most often returns data as a python dictionary or list - closely mimicking the returned JSON of the IEX API. However, in some cases there are additional methods (suffixed with \n_table\n) that will return a Pandas dataframe for convenience.\n\n\n\n\nCreating a new \nstock\n object\n\u00b6\n\n\nProvide a stock symbol to create a stock object. Stock symbols are case-insensitive.\n\n\nfrom\n \niex\n \nimport\n \nstock\n\n\ntsla\n \n=\n \nstock\n(\n\"tsla\"\n)\n\n\n\n\n\n\n\nStock Methods\n\u00b6\n\n\nBelow are the methods that can be invoked with a \nstock\n object. Beneath the listed method you will find a link that will take you to the corresponding IEX API documentation.\n\n\nbook()\n\u00b6\n\n\nIEX API - Book \n\nopen_in_new\n\n\n\nfrom\n \niex\n \nimport\n \nstock\n\n\ngoog\n \n=\n \nstock\n(\n\"goog\"\n)\n\n\ngoog\n.\nbook\n()\n\n\n\n\n\n# Output\n{\n 'quote': {...},\n 'bids': [...],\n 'asks': [...],\n 'trades': [...],\n 'systemEvent': {...}\n}\n\n\n\n\n\nchart()\n\u00b6\n\n\nIEX API - Chart \nopen_in_new\n\n\nParameters\n\n\n\n\nrange\n (default: 1m)\n - Historical adjusted market-wide data or IEX-only data. See the \nIEX API reference\n for further details.\n\n\n5y\n \n2y\n \n1y\n \nytd\n \n6m\n \n3m\n \n1m\n \nYYYYMMDD (date)\n \ndynamic\n\n\n\n\n\n\nchartReset\n (bool; default: \nNone\n)\n - 1d chart will reset at midnight instead of the default behavior of 9:30am ET.\n\n\nchartSimplify\n (bool; default: \nNone\n)\n -  If \nTrue\n, runs a polyline simplification using the Douglas-Peucker algorithm. This is useful if plotting sparkline charts.\n\n\nchartInterval\n (bool: default: \nNone\n)\n -  If passed, chart data will return every Nth element.\n\n\n\n\nchart_table()\n\u00b6\n\n\nReturns a pandas dataframe from chart data. If \nrange=dynamic\n, a \nrange\n column is appended to the returned dataframe indicating whether the data is for \n1d\n or \n1m\n. See the See the \nIEX API documentation\n for further details.\n\n\nParameters\n\n\nThe same parameters are available as with \nchart()\n.\n\n\nExample\n\n\nfrom\n \niex\n \nimport\n \nstock\n\n\ngoog\n \n=\n \nstock\n(\n\"goog\"\n)\n\n\ngoog\n.\nchart_table\n(\nrange\n=\n'1d'\n)\n\n\n\n\n\n# Output\n      average  changeOverTime     close      date      high  \\\n0    1094.852        0.000000  1095.535  20180511  1095.535\n1      -1.000             NaN       NaN  20180511    -1.000\n2      -1.000             NaN       NaN  20180511    -1.000\n3    1093.145       -0.001559  1093.420  20180511  1093.630\n...\n\n\n\n\n\ncompany()\n\u00b6\n\n\nIEX API - Company \nopen_in_new\n\n\ndelayed_quote()\n\u00b6\n\n\nIEX API - Delayed Quote \nopen_in_new\n\n\ndividends()\n\u00b6\n\n\nIEX API - Dividends \nopen_in_new\n\n\nparameters\n\n\n\n\nrange\n (default: 1m)\n - Historical market data; range of data on dividends to return.\n\n\n\n\ndividends_table()\n\u00b6\n\n\nReturns a dataframe of \ndividend()\n\n\nparameters\n\n\n\n\nrange\n (default: 1m)\n - Historical market data; range of data on dividends to return.\n\n\n\n\nExample\n\n\nfrom\n \niex\n \nimport\n \nstock\n\n\nF\n \n=\n \nstock\n(\n\"F\"\n)\n\n\nf\n.\ndividends_table\n()\n\n\n\n\n\n    # Output\n    change  changeOverTime  changePercent    close        date   \\\n0   0.098676        0.000000          0.887  11.2293  2018-04-16 \n1   0.000000        0.000000          0.000  11.2293  2018-04-17 \n2  -0.049338       -0.004390         -0.439  11.1800  2018-04-18 \n3  -0.220002       -0.023982         -1.968  10.9600  2018-04-19 \n4  -0.140000       -0.036449         -1.277  10.8200  2018-04-20 \n...\n\n\n\n\nearnings()\n\u00b6\n\n\nIEX API - Earnings \nopen_in_new\n\n\neffective_spread()\n\u00b6\n\n\nIEX API - Effective Spread \nopen_in_new\n\n\neffective_spread_table()\n\u00b6\n\n\nReturns a dataframe of \neffective_spread()\n\n\nfinancials()\n\u00b6\n\n\nfinancials_table()\n\u00b6\n\n\nohlc()\n\u00b6\n\n\nIEX API - OHLC \nopen_in_new\n\n\n\n\nInfo\n\n\nIf you are trying to return the official open/close for all stocks use \nmarket.ohlc()\n.\n\n\n\n\nprice()\n\u00b6\n\n\npeers()\n\u00b6\n\n\nReturns a list of peer (competitor/related) companies. By default, the returned list is a set of \nstock\n objects. You can return a list of companies as strings by setting \nas_string=True\n.\n\n\nParameters\n\n\n\n\nas_string\n (Default: \nFalse\n)\n - If set to \nTrue\n, return the list of peers as strings rather than \nstock\n objects.\n\n\n\n\nExample\n\n\nfrom\n \niex\n \nimport\n \nstock\n\n\ntsla\n \n=\n \nstock\n(\n\"tsla\"\n)\n\n\ntsla\n.\npeers\n()\n\n\n\n\n\n# Output\n[<stock:HMC>, <stock:TM>, <stock:F>, <stock:GM>]\n\n\n\n\n\nprevious()\n\u00b6\n\n\nIEX API - Previous \nopen_in_new\n\n\nReturns the previous day adjusted stock price. The IEX API can also return the previous day prices for the entire market. For this query, use \nmarket.previous()\n.\n\n\n\n\nInfo\n\n\nIf you are trying to return the previous days market data, use \nmarket.previous()\n.\n\n\n\n\nprice()\n\u00b6\n\n\nIEX API - Price \nopen_in_new\n\n\nReturns the stock price.\n\n\nExample\n\n\ntsla\n \n=\n \nstock\n(\n\"TSLA\"\n)\n\n\ntsla\n.\nprice\n()\n\n\n\n\n\n284.18\n\n\n\n\n\nquote()\n\u00b6\n\n\nstats()\n\u00b6",
+            "title": "Stock"
+        },
+        {
+            "location": "/stocks/#stock",
+            "text": "stock(symbol, date_format)  Parameters   symbol  - A stock symbol  date_format  (default: timestamp)  - Specifies how timestamps should be should be returned. Set to one of the following:  timestamp  - default; Does not alter IEX API output.  datetime  - Datetime object.  isoformat  - Converts to isoformat.      The stock class  The  stock  class is useful for returning information for a specific stock, and is designed to map closely to the organization of the  Stocks  section of the IEX API.  One major difference between the stock class and the Stocks section of the IEX API is that the  stock  object is not designed to handle batch requests (multiple stocks) or market data. Batch requests are requests for data on multiple stocks at the same time. Market requests return data for all stocks or a set of stocks based on the request ( e.g.  gainers and losers). For batch requests, you should use the  batch , and market requests should use the  market  object.  Also note that the  stock  object most often returns data as a python dictionary or list - closely mimicking the returned JSON of the IEX API. However, in some cases there are additional methods (suffixed with  _table ) that will return a Pandas dataframe for convenience.",
+            "title": "Stock"
+        },
+        {
+            "location": "/stocks/#creating-a-new-stock-object",
+            "text": "Provide a stock symbol to create a stock object. Stock symbols are case-insensitive.  from   iex   import   stock  tsla   =   stock ( \"tsla\" )",
+            "title": "Creating a new stock object"
+        },
+        {
+            "location": "/stocks/#stock-methods",
+            "text": "Below are the methods that can be invoked with a  stock  object. Beneath the listed method you will find a link that will take you to the corresponding IEX API documentation.",
+            "title": "Stock Methods"
+        },
+        {
+            "location": "/stocks/#book",
+            "text": "IEX API - Book  \nopen_in_new  from   iex   import   stock  goog   =   stock ( \"goog\" )  goog . book ()   # Output\n{\n 'quote': {...},\n 'bids': [...],\n 'asks': [...],\n 'trades': [...],\n 'systemEvent': {...}\n}",
+            "title": "book()"
+        },
+        {
+            "location": "/stocks/#chart",
+            "text": "IEX API - Chart  open_in_new  Parameters   range  (default: 1m)  - Historical adjusted market-wide data or IEX-only data. See the  IEX API reference  for further details.  5y   2y   1y   ytd   6m   3m   1m   YYYYMMDD (date)   dynamic    chartReset  (bool; default:  None )  - 1d chart will reset at midnight instead of the default behavior of 9:30am ET.  chartSimplify  (bool; default:  None )  -  If  True , runs a polyline simplification using the Douglas-Peucker algorithm. This is useful if plotting sparkline charts.  chartInterval  (bool: default:  None )  -  If passed, chart data will return every Nth element.",
+            "title": "chart()"
+        },
+        {
+            "location": "/stocks/#chart_table",
+            "text": "Returns a pandas dataframe from chart data. If  range=dynamic , a  range  column is appended to the returned dataframe indicating whether the data is for  1d  or  1m . See the See the  IEX API documentation  for further details.  Parameters  The same parameters are available as with  chart() .  Example  from   iex   import   stock  goog   =   stock ( \"goog\" )  goog . chart_table ( range = '1d' )   # Output\n      average  changeOverTime     close      date      high  \\\n0    1094.852        0.000000  1095.535  20180511  1095.535\n1      -1.000             NaN       NaN  20180511    -1.000\n2      -1.000             NaN       NaN  20180511    -1.000\n3    1093.145       -0.001559  1093.420  20180511  1093.630\n...",
+            "title": "chart_table()"
+        },
+        {
+            "location": "/stocks/#company",
+            "text": "IEX API - Company  open_in_new",
+            "title": "company()"
+        },
+        {
+            "location": "/stocks/#delayed_quote",
+            "text": "IEX API - Delayed Quote  open_in_new",
+            "title": "delayed_quote()"
+        },
+        {
+            "location": "/stocks/#dividends",
+            "text": "IEX API - Dividends  open_in_new  parameters   range  (default: 1m)  - Historical market data; range of data on dividends to return.",
+            "title": "dividends()"
+        },
+        {
+            "location": "/stocks/#dividends_table",
+            "text": "Returns a dataframe of  dividend()  parameters   range  (default: 1m)  - Historical market data; range of data on dividends to return.   Example  from   iex   import   stock  F   =   stock ( \"F\" )  f . dividends_table ()       # Output\n    change  changeOverTime  changePercent    close        date   \\\n0   0.098676        0.000000          0.887  11.2293  2018-04-16 \n1   0.000000        0.000000          0.000  11.2293  2018-04-17 \n2  -0.049338       -0.004390         -0.439  11.1800  2018-04-18 \n3  -0.220002       -0.023982         -1.968  10.9600  2018-04-19 \n4  -0.140000       -0.036449         -1.277  10.8200  2018-04-20 \n...",
+            "title": "dividends_table()"
+        },
+        {
+            "location": "/stocks/#earnings",
+            "text": "IEX API - Earnings  open_in_new",
+            "title": "earnings()"
+        },
+        {
+            "location": "/stocks/#effective_spread",
+            "text": "IEX API - Effective Spread  open_in_new",
+            "title": "effective_spread()"
+        },
+        {
+            "location": "/stocks/#effective_spread_table",
+            "text": "Returns a dataframe of  effective_spread()",
+            "title": "effective_spread_table()"
+        },
+        {
+            "location": "/stocks/#financials",
+            "text": "",
+            "title": "financials()"
+        },
+        {
+            "location": "/stocks/#financials_table",
+            "text": "",
+            "title": "financials_table()"
+        },
+        {
+            "location": "/stocks/#ohlc",
+            "text": "IEX API - OHLC  open_in_new   Info  If you are trying to return the official open/close for all stocks use  market.ohlc() .",
+            "title": "ohlc()"
+        },
+        {
+            "location": "/stocks/#price",
+            "text": "",
+            "title": "price()"
+        },
+        {
+            "location": "/stocks/#peers",
+            "text": "Returns a list of peer (competitor/related) companies. By default, the returned list is a set of  stock  objects. You can return a list of companies as strings by setting  as_string=True .  Parameters   as_string  (Default:  False )  - If set to  True , return the list of peers as strings rather than  stock  objects.   Example  from   iex   import   stock  tsla   =   stock ( \"tsla\" )  tsla . peers ()   # Output\n[<stock:HMC>, <stock:TM>, <stock:F>, <stock:GM>]",
+            "title": "peers()"
+        },
+        {
+            "location": "/stocks/#previous",
+            "text": "IEX API - Previous  open_in_new  Returns the previous day adjusted stock price. The IEX API can also return the previous day prices for the entire market. For this query, use  market.previous() .   Info  If you are trying to return the previous days market data, use  market.previous() .",
+            "title": "previous()"
+        },
+        {
+            "location": "/stocks/#price_1",
+            "text": "IEX API - Price  open_in_new  Returns the stock price.  Example  tsla   =   stock ( \"TSLA\" )  tsla . price ()   284.18",
+            "title": "price()"
+        },
+        {
+            "location": "/stocks/#quote",
+            "text": "",
+            "title": "quote()"
+        },
+        {
+            "location": "/stocks/#stats",
+            "text": "",
+            "title": "stats()"
+        },
+        {
+            "location": "/batch/",
+            "text": "batch\n\u00b6\n\n\n\n\nThe batch class\n\n\nThe batch object is used to request data on multiple stocks. It is designed to operate very similar to the \nstock\n object with nearly identical methods. The key difference is that the \nbatch\n object will return data as a Pandas Dataframe so that it is more convenient to work with.",
+            "title": "Batch"
+        },
+        {
+            "location": "/batch/#batch",
+            "text": "The batch class  The batch object is used to request data on multiple stocks. It is designed to operate very similar to the  stock  object with nearly identical methods. The key difference is that the  batch  object will return data as a Pandas Dataframe so that it is more convenient to work with.",
+            "title": "batch"
+        },
+        {
+            "location": "/reference_data/",
+            "text": "Reference\n\u00b6\n\n\nreference(output_format)\n\n\n\nParameters\n\n\n\n\noutput_format\n - The format to output. Options:\n\n\ndataframe\n (default)\n - Return result as a pandas dataframe.\n\n\njson\n - Return raw result converted from JSON to a python data structure.\n\n\n\n\n\n\n\n\n\n\nThe reference class\n\n\nThe \nreference\n class is designed to map closely to the \nReference Data\n section of the IEX API.\n\n\n\n\nCreating a new \nreference\n object\n\u00b6\n\n\nfrom\n \niex\n \nimport\n \nreference\n\n\nref\n \n=\n \nreference\n()\n\n\n\n\n\n\n\nReference Methods\n\u00b6\n\n\nBelow are the methods that can be invoked with a \nreference\n object. Beneath the listed method you will find a link that will take you to the corresponding IEX API documentation.\n\n\nsymbols()\n\u00b6\n\n\nIEX API - symbols \n\nopen_in_new\n\n\n\nfrom\n \niex\n \nimport\n \nreference\n\n\nref\n \n=\n \nreference\n()\n\n\nref\n.\nsymbols\n()\n\n\n\n\n\n# Output\n\n     symbol        date  iexId  isEnabled  \\\n0         A  2018-05-15      2       True   \n1        AA  2018-05-15  12042       True   \n2      AABA  2018-05-15   7653       True   \n...\n\n\n\n\n\niex_corporate_actions()\n\u00b6\n\n\nIEX API - IEX Corporate Actions \n\nopen_in_new\n\n\n\nParameters\n\n\n\n\ndate\n - Date specified as \nYYYYMMDD\n or a datetime object.\n\n\n\n\niex_dividends()\n\u00b6\n\n\nIEX API - IEX Dividends \n\nopen_in_new\n\n\n\nParameters\n\n\n\n\ndate\n - Date specified as \nYYYYMMDD\n or a datetime object.\n\n\n\n\niex_next_day_ex_date()\n\u00b6\n\n\nIEX API - IEX Next Day Ex Date \n\nopen_in_new\n\n\n\nParameters\n\n\n\n\ndate\n - Date specified as \nYYYYMMDD\n or a datetime object.\n\n\n\n\niex_listed_symbol_directory()\n\u00b6\n\n\nIEX API - IEX Listed Symbol Directory \n\nopen_in_new\n\n\n\nParameters\n\n\n\n\ndate\n - Date specified as \nYYYYMMDD\n or a datetime object.",
+            "title": "Reference Data"
+        },
+        {
+            "location": "/reference_data/#reference",
+            "text": "reference(output_format)  Parameters   output_format  - The format to output. Options:  dataframe  (default)  - Return result as a pandas dataframe.  json  - Return raw result converted from JSON to a python data structure.      The reference class  The  reference  class is designed to map closely to the  Reference Data  section of the IEX API.",
+            "title": "Reference"
+        },
+        {
+            "location": "/reference_data/#creating-a-new-reference-object",
+            "text": "from   iex   import   reference  ref   =   reference ()",
+            "title": "Creating a new reference object"
+        },
+        {
+            "location": "/reference_data/#reference-methods",
+            "text": "Below are the methods that can be invoked with a  reference  object. Beneath the listed method you will find a link that will take you to the corresponding IEX API documentation.",
+            "title": "Reference Methods"
+        },
+        {
+            "location": "/reference_data/#symbols",
+            "text": "IEX API - symbols  \nopen_in_new  from   iex   import   reference  ref   =   reference ()  ref . symbols ()   # Output\n\n     symbol        date  iexId  isEnabled  \\\n0         A  2018-05-15      2       True   \n1        AA  2018-05-15  12042       True   \n2      AABA  2018-05-15   7653       True   \n...",
+            "title": "symbols()"
+        },
+        {
+            "location": "/reference_data/#iex_corporate_actions",
+            "text": "IEX API - IEX Corporate Actions  \nopen_in_new  Parameters   date  - Date specified as  YYYYMMDD  or a datetime object.",
+            "title": "iex_corporate_actions()"
+        },
+        {
+            "location": "/reference_data/#iex_dividends",
+            "text": "IEX API - IEX Dividends  \nopen_in_new  Parameters   date  - Date specified as  YYYYMMDD  or a datetime object.",
+            "title": "iex_dividends()"
+        },
+        {
+            "location": "/reference_data/#iex_next_day_ex_date",
+            "text": "IEX API - IEX Next Day Ex Date  \nopen_in_new  Parameters   date  - Date specified as  YYYYMMDD  or a datetime object.",
+            "title": "iex_next_day_ex_date()"
+        },
+        {
+            "location": "/reference_data/#iex_listed_symbol_directory",
+            "text": "IEX API - IEX Listed Symbol Directory  \nopen_in_new  Parameters   date  - Date specified as  YYYYMMDD  or a datetime object.",
+            "title": "iex_listed_symbol_directory()"
+        },
+        {
+            "location": "/iex_stats/",
+            "text": "IEX Stats\n\u00b6\n\n\niex_stats(date_format, output_format)\n\n\n\nParameters\n\n\n\n\ndate_format\n (default: timestamp)\n - Specifies how timestamps should be should be returned. Set to one of the following:\n\n\ntimestamp\n - default; Does not alter IEX API output.\n\n\ndatetime\n - Datetime object.\n\n\nisoformat\n - Converts to isoformat.\n\n\n\n\n\n\noutput_format\n - The format to output. Options:\n\n\ndataframe\n (default)\n - Return result as a pandas dataframe.\n\n\njson\n - Return raw result converted from JSON to a python data structure.\n\n\n\n\n\n\n\n\n\n\nThe iex_stats class\n\n\nThe \niex_stats\n class creates an object that can be used to fetch IEX aggregate data.\n\n\n\n\nCreating a new \niex_stats\n object\n\u00b6\n\n\nProvide a stock symbol to create a stock object. Stock symbols are case-insensitive.\n\n\nfrom\n \niex\n \nimport\n \niex_stats\n\n\nstats\n \n=\n \niex_stats\n()\n\n\n\n\n\n\n\nIEX Stats Methods\n\u00b6\n\n\nintraday()\n\u00b6\n\n\nIEX API - Intraday \n\nopen_in_new\n\n\n\nfrom\n \niex\n \nimport\n \niex_stats\n\n\niex_stats\n(\ndate_format\n=\n'datetime'\n)\n.\nintraday\n()\n\n\n\n\n                                   lastUpdated         value\nmarketShare   2018-05-17 18:32:07.535000+00:00  2.661000e-02\nnotional      2018-05-17 18:32:07.472000+00:00  5.214433e+09\nroutedVolume  2018-05-17 18:32:06.999000+00:00  2.245174e+07\nsymbolsTraded 2018-05-17 18:32:07.472000+00:00  5.299000e+03\nvolume        2018-05-17 18:32:07.472000+00:00  1.141716e+08\n\n\n\nrecent()\n\u00b6\n\n\nIEX API - Recent \n\nopen_in_new\n\n\n\nrecords()\n\u00b6\n\n\nIEX API - Records \n\nopen_in_new\n\n\n\nhistorical_summary()\n\u00b6\n\n\nIEX API - Historical Summary \n\nopen_in_new\n\n\n\nhistorical_daily()\n\u00b6\n\n\nIEX API - Historical Daily \n\nopen_in_new",
+            "title": "IEX Stats"
+        },
+        {
+            "location": "/iex_stats/#iex-stats",
+            "text": "iex_stats(date_format, output_format)  Parameters   date_format  (default: timestamp)  - Specifies how timestamps should be should be returned. Set to one of the following:  timestamp  - default; Does not alter IEX API output.  datetime  - Datetime object.  isoformat  - Converts to isoformat.    output_format  - The format to output. Options:  dataframe  (default)  - Return result as a pandas dataframe.  json  - Return raw result converted from JSON to a python data structure.      The iex_stats class  The  iex_stats  class creates an object that can be used to fetch IEX aggregate data.",
+            "title": "IEX Stats"
+        },
+        {
+            "location": "/iex_stats/#creating-a-new-iex_stats-object",
+            "text": "Provide a stock symbol to create a stock object. Stock symbols are case-insensitive.  from   iex   import   iex_stats  stats   =   iex_stats ()",
+            "title": "Creating a new iex_stats object"
+        },
+        {
+            "location": "/iex_stats/#iex-stats-methods",
+            "text": "",
+            "title": "IEX Stats Methods"
+        },
+        {
+            "location": "/iex_stats/#intraday",
+            "text": "IEX API - Intraday  \nopen_in_new  from   iex   import   iex_stats  iex_stats ( date_format = 'datetime' ) . intraday ()                                      lastUpdated         value\nmarketShare   2018-05-17 18:32:07.535000+00:00  2.661000e-02\nnotional      2018-05-17 18:32:07.472000+00:00  5.214433e+09\nroutedVolume  2018-05-17 18:32:06.999000+00:00  2.245174e+07\nsymbolsTraded 2018-05-17 18:32:07.472000+00:00  5.299000e+03\nvolume        2018-05-17 18:32:07.472000+00:00  1.141716e+08",
+            "title": "intraday()"
+        },
+        {
+            "location": "/iex_stats/#recent",
+            "text": "IEX API - Recent  \nopen_in_new",
+            "title": "recent()"
+        },
+        {
+            "location": "/iex_stats/#records",
+            "text": "IEX API - Records  \nopen_in_new",
+            "title": "records()"
+        },
+        {
+            "location": "/iex_stats/#historical_summary",
+            "text": "IEX API - Historical Summary  \nopen_in_new",
+            "title": "historical_summary()"
+        },
+        {
+            "location": "/iex_stats/#historical_daily",
+            "text": "IEX API - Historical Daily  \nopen_in_new",
+            "title": "historical_daily()"
+        },
+        {
+            "location": "/market/",
+            "text": "Market\n\u00b6\n\n\nmarket(date_format, output_format)\n\n\n\nParameters\n\n\n\n\ndate_format\n (default: timestamp)\n - Specifies how timestamps should be should be returned. Set to one of the following:\n\n\ntimestamp\n - default; Does not alter IEX API output.\n\n\ndatetime\n - Datetime object.\n\n\nisoformat\n - Converts to isoformat.\n\n\n\n\n\n\noutput_format\n - The format to output. Options:\n\n\ndataframe\n (default)\n - Return result as a pandas dataframe.\n\n\njson\n - Return raw result converted from JSON to a python data structure.\n\n\n\n\n\n\n\n\n\n\nmarket\n\n\nCertain API calls return market-wide data. For example, it might return data on stock prices for all stocks or a list of stocks based on a particular metric (\ne.g.\n performance, gainers, losers).\n\n\n\n\nMarket Methods: List items\n\u00b6\n\n\nIEX API - List \n\nopen_in_new\n\n\n\nmostactive()\n\u00b6\n\n\nExample\n\n\nmarket_list\n \n=\n \nmarket\n()\n\n\nmarket_list\n.\nmostactive\n()\n\n\n\n\n\n   avgTotalVolume calculationPrice  change  changePercent    close  \\\n0          494020              sip  0.0500        0.00126  39.8000\n1       124752351              sip -0.0052       -0.15249   0.0341\n2        50816723             tops  0.4100        0.03293  12.4500\n3         8446078             tops  3.0100        0.10057  29.9300\n4        44161998             tops  2.2050        0.04083  54.0100\n5        64003399             tops  0.6900        0.01485  46.4800\n\n\n\n\n\ngainers()\n\u00b6\n\n\nlosers()\n\u00b6\n\n\niexvolume()\n\u00b6\n\n\niexpercent()\n\u00b6\n\n\nMarket Methods: Additional\n\u00b6\n\n\nthreshold_securities()\n\u00b6\n\n\nIEX API - IEX Regulation SHO Threshold Securities \n\nopen_in_new\n\n\n\nshort_interest()\n\u00b6\n\n\nIEX API - IEX Threshold Securities \n\nopen_in_new\n\n\n\nnews()\n\u00b6\n\n\nIEX API - News \n\nopen_in_new\n\n\n\nParameters\n\n\n\n\nlast\n (default: 10)\n - Number of stories to return between 1 and 50.\n\n\n\n\nohlc()\n\u00b6\n\n\nIEX API - News \n\nopen_in_new\n\n\n\nprevious()\n\u00b6\n\n\nIEX API - News \n\nopen_in_new\n\n\n\nExample\n\n\nfrom\n \niex\n \nimport\n \nmarket\n\n\nm\n \n=\n \nmarket\n()\n\n\nm\n.\nprevious\n()\n\n\n\n\n     symbol  change changePercent   close        date     high     low  \\\n0         A   -6.71        -9.695    62.5  2018-05-15     64.1    60.7\n1        AA   -1.79        -3.421   50.54  2018-05-15    51.95    50.4\n2      AABA    -0.3        -0.391   76.44  2018-05-15    76.46    75.4\n3       AAC    0.02         0.176    11.4  2018-05-15    11.52   11.19\n4      AADR    0.52         0.888   59.08  2018-05-15  59.1785   58.02\n5       AAL    0.73         1.719   43.19  2018-05-15     43.4    41.6\n\n\n\nmarket()\n\u00b6\n\n\nIEX API - News \n\nopen_in_new\n\n\n\nReturns near real time traded volume on the markets.",
+            "title": "Markets"
+        },
+        {
+            "location": "/market/#market",
+            "text": "market(date_format, output_format)  Parameters   date_format  (default: timestamp)  - Specifies how timestamps should be should be returned. Set to one of the following:  timestamp  - default; Does not alter IEX API output.  datetime  - Datetime object.  isoformat  - Converts to isoformat.    output_format  - The format to output. Options:  dataframe  (default)  - Return result as a pandas dataframe.  json  - Return raw result converted from JSON to a python data structure.      market  Certain API calls return market-wide data. For example, it might return data on stock prices for all stocks or a list of stocks based on a particular metric ( e.g.  performance, gainers, losers).",
+            "title": "Market"
+        },
+        {
+            "location": "/market/#market-methods-list-items",
+            "text": "IEX API - List  \nopen_in_new",
+            "title": "Market Methods: List items"
+        },
+        {
+            "location": "/market/#mostactive",
+            "text": "Example  market_list   =   market ()  market_list . mostactive ()      avgTotalVolume calculationPrice  change  changePercent    close  \\\n0          494020              sip  0.0500        0.00126  39.8000\n1       124752351              sip -0.0052       -0.15249   0.0341\n2        50816723             tops  0.4100        0.03293  12.4500\n3         8446078             tops  3.0100        0.10057  29.9300\n4        44161998             tops  2.2050        0.04083  54.0100\n5        64003399             tops  0.6900        0.01485  46.4800",
+            "title": "mostactive()"
+        },
+        {
+            "location": "/market/#gainers",
+            "text": "",
+            "title": "gainers()"
+        },
+        {
+            "location": "/market/#losers",
+            "text": "",
+            "title": "losers()"
+        },
+        {
+            "location": "/market/#iexvolume",
+            "text": "",
+            "title": "iexvolume()"
+        },
+        {
+            "location": "/market/#iexpercent",
+            "text": "",
+            "title": "iexpercent()"
+        },
+        {
+            "location": "/market/#market-methods-additional",
+            "text": "",
+            "title": "Market Methods: Additional"
+        },
+        {
+            "location": "/market/#threshold_securities",
+            "text": "IEX API - IEX Regulation SHO Threshold Securities  \nopen_in_new",
+            "title": "threshold_securities()"
+        },
+        {
+            "location": "/market/#short_interest",
+            "text": "IEX API - IEX Threshold Securities  \nopen_in_new",
+            "title": "short_interest()"
+        },
+        {
+            "location": "/market/#news",
+            "text": "IEX API - News  \nopen_in_new  Parameters   last  (default: 10)  - Number of stories to return between 1 and 50.",
+            "title": "news()"
+        },
+        {
+            "location": "/market/#ohlc",
+            "text": "IEX API - News  \nopen_in_new",
+            "title": "ohlc()"
+        },
+        {
+            "location": "/market/#previous",
+            "text": "IEX API - News  \nopen_in_new  Example  from   iex   import   market  m   =   market ()  m . previous ()        symbol  change changePercent   close        date     high     low  \\\n0         A   -6.71        -9.695    62.5  2018-05-15     64.1    60.7\n1        AA   -1.79        -3.421   50.54  2018-05-15    51.95    50.4\n2      AABA    -0.3        -0.391   76.44  2018-05-15    76.46    75.4\n3       AAC    0.02         0.176    11.4  2018-05-15    11.52   11.19\n4      AADR    0.52         0.888   59.08  2018-05-15  59.1785   58.02\n5       AAL    0.73         1.719   43.19  2018-05-15     43.4    41.6",
+            "title": "previous()"
+        },
+        {
+            "location": "/market/#market_1",
+            "text": "IEX API - News  \nopen_in_new  Returns near real time traded volume on the markets.",
+            "title": "market()"
+        }
+    ]
+}
